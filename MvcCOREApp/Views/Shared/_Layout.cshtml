@@ -1,0 +1,66 @@
+﻿@model List<MvcCOREApp.Models.MenuItem>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MvcCOREApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MvcCOREApp.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                @foreach (var menuItem in (List<MvcCOREApp.Models.MenuItem>)ViewBag.MenuItems)
+                {
+                    <li class="dropdown">
+                        <a asp-area="" asp-controller="@menuItem.Url" asp-action="@menuItem.MenuName">@menuItem.Title</a>
+                        @if (menuItem.SubItems != null && menuItem.SubItems.Count > 0)
+                        {
+                            <ul class="dropdown-content">
+                                @foreach (var subItem in menuItem.SubItems)
+                                {
+                                    <li><a asp-area="" asp-controller="@subItem.Url"
+                                            asp-action="@subItem.MenuName">@subItem.Title</a></li>
+                                    @if (subItem.SubItems != null && subItem.SubItems.Count > 0)
+                                    {
+                                        <ul class="dropdown-content">
+                                            @foreach (var leafsubItem in subItem.SubItems)
+                                            {
+                                                <li><a asp-area="" asp-controller="@leafsubItem.Url"
+                                                        asp-action="@leafsubItem.MenuName">@leafsubItem.Title</a></li>
+
+                                            }
+                                        </ul>
+                                    }
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - MvcCOREApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
